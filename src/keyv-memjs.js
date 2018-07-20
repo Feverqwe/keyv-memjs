@@ -19,7 +19,7 @@ class KeyvMemjs extends EventEmitter {
 
     if (!options.client) {
       if (!options.hosts) {
-        options.hosts = "127.0.0.1:11211";
+        options.hosts = '127.0.0.1:11211';
       }
 
       if (Array.isArray(options.hosts)) {
@@ -45,7 +45,7 @@ class KeyvMemjs extends EventEmitter {
     key = this.getKey(key);
 
     return this.memcached.get(key).then(value => {
-      if (!value) {
+      if (value === null) {
         return undefined;
       }
       return value.toString();
