@@ -1,0 +1,12 @@
+{
+  "name": "keyv-memjs",
+  "version": "1.0.0",
+  "description": "",
+  "main": "./src/keyv-memjs",
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "memjs": "^1.2.0",
+    "pify": "^3.0.0"
+  }
+}
