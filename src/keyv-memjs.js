@@ -7,9 +7,11 @@ class KeyvMemjs extends EventEmitter {
   constructor(hosts, options) {
     super();
 
-    const m = /^memjs:\/\/(.+)/.exec(hosts);
-    if (m) {
-      hosts = m[1];
+    if (typeof hosts === 'string') {
+      const m = /^memjs:\/\/(.+)/.exec(hosts);
+      if (m) {
+        hosts = m[1];
+      }
     }
 
     options = Object.assign(
