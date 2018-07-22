@@ -18,8 +18,6 @@ class KeyvMemjs extends EventEmitter {
       options
     );
 
-    this.prefix = options.prefix || '';
-
     if (!options.client) {
       if (!options.hosts) {
         options.hosts = '127.0.0.1:11211';
@@ -46,13 +44,7 @@ class KeyvMemjs extends EventEmitter {
     });
   }
 
-  getKey(key) {
-    return this.prefix + key;
-  }
-
   get(key) {
-    key = this.getKey(key);
-
     return this.memcached.get(key).then(value => {
       if (value === null) {
         return undefined;
@@ -62,8 +54,6 @@ class KeyvMemjs extends EventEmitter {
   }
 
   set(key, value, ttl) {
-    key = this.getKey(key);
-
     if (typeof value === 'undefined') {
       return Promise.resolve(undefined);
     }
@@ -77,8 +67,6 @@ class KeyvMemjs extends EventEmitter {
   }
 
   delete(key) {
-    key = this.getKey(key);
-
     return this.memcached.delete(key);
   }
 
