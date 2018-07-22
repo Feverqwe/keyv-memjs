@@ -2,6 +2,8 @@
 
 Memcached storage adapter for [Keyv](https://github.com/lukechilds/keyv).
 
+Important! Method .clear don't support namespace.
+
 ## Usage
 
 ```js

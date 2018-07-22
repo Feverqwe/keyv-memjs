@@ -83,7 +83,7 @@ class KeyvMemjs extends EventEmitter {
   }
 
   clear() {
-    return this.memcached.flush();
+    return this.memcached.flush().then(() => undefined);
   }
 }
 
