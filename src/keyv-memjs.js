@@ -38,6 +38,12 @@ class KeyvMemjs extends EventEmitter {
       obj[method] = pify(client[method].bind(client));
       return obj;
     }, {});
+
+    client.stats(err => {
+      if (err) {
+        this.emit('error', err);
+      }
+    });
   }
 
   getKey(key) {
