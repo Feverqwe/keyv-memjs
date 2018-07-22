@@ -34,7 +34,7 @@ class KeyvMemjs extends EventEmitter {
 
     const client = options.client;
 
-    this.memcached = ['get', 'set', 'delete', 'flush'].reduce((obj, method) => {
+    this.client = ['get', 'set', 'delete', 'flush'].reduce((obj, method) => {
       obj[method] = pify(client[method].bind(client));
       return obj;
     }, {});
@@ -47,7 +47,7 @@ class KeyvMemjs extends EventEmitter {
   }
 
   get(key) {
-    return this.memcached.get(key).then(value => {
+    return this.client.get(key).then(value => {
       if (value === null) {
         return undefined;
       }
@@ -65,15 +65,15 @@ class KeyvMemjs extends EventEmitter {
       expires = Math.ceil(ttl / 1000);
     }
 
-    return this.memcached.set(key, value, {expires});
+    return this.client.set(key, value, {expires});
   }
 
   delete(key) {
-    return this.memcached.delete(key);
+    return this.client.delete(key);
   }
 
   clear() {
-    return this.memcached.flush().then(() => undefined);
+    return this.client.flush().then(() => undefined);
   }
 }
 
