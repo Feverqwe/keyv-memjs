@@ -60,7 +60,7 @@ class KeyvMemjs extends EventEmitter {
 
     let expires = null;
     if (typeof ttl === 'number') {
-      expires = Math.trunc(ttl / 1000);
+      expires = Math.ceil(ttl / 1000);
     }
 
     return this.memcached.set(key, value, {expires});
