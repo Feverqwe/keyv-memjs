@@ -2,8 +2,6 @@
 
 Memcached storage adapter for [Keyv](https://github.com/lukechilds/keyv).
 
-If TTL is not set, ttl is 24 hours.
-
 ## Usage
 
 ```js

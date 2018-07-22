@@ -3,8 +3,6 @@ const EventEmitter = require('events');
 const memjs = require('memjs');
 const pify = require('pify');
 
-const oneDay = 86400 * 1000;
-
 class KeyvMemjs extends EventEmitter {
   constructor(hosts, options) {
     super();
@@ -59,13 +57,12 @@ class KeyvMemjs extends EventEmitter {
       return Promise.resolve(undefined);
     }
 
-    if (typeof ttl !== 'number') {
-      ttl = oneDay;
+    let expires = null;
+    if (typeof ttl === 'number') {
+      expires = Math.trunc(ttl / 1000);
     }
 
-    ttl = Math.trunc(ttl / 1000);
-
-    return this.memcached.set(key, value, {expires: ttl});
+    return this.memcached.set(key, value, {expires});
   }
 
   delete(key) {
