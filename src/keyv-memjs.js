@@ -1,7 +1,8 @@
 const EventEmitter = require('events');
-
 const memjs = require('memjs');
 const pify = require('pify');
+
+const TTL_MAX = 30*24*60*60*1000; // 30 days ms
 
 class KeyvMemjs extends EventEmitter {
   constructor(hosts, options) {
@@ -62,7 +63,13 @@ class KeyvMemjs extends EventEmitter {
 
     let expires = null;
     if (typeof ttl === 'number') {
-      expires = Math.ceil(ttl / 1000);
+      if (ttl > TTL_MAX) {
+        // REF: https://github.com/memcached/memcached/blob/master/doc/protocol.txt#L79
+        // Calculate timestamp
+        expires = Math.ceil((Date.now() + ttl) / 1000);
+      } else {
+        expires = Math.ceil(ttl / 1000);
+      }
     }
 
     return this.client.set(key, value, {expires});
