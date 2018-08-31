@@ -35,7 +35,9 @@ class KeyvMemjs extends EventEmitter {
 
     const client = options.client;
 
-    this.client = ['get', 'set', 'delete', 'flush'].reduce((obj, method) => {
+    this.client = client;
+
+    this.clientMethods = ['get', 'set', 'delete', 'flush'].reduce((obj, method) => {
       obj[method] = pify(client[method].bind(client));
       return obj;
     }, {});
@@ -48,7 +50,7 @@ class KeyvMemjs extends EventEmitter {
   }
 
   get(key) {
-    return this.client.get(key).then(value => {
+    return this.clientMethods.get(key).then(value => {
       if (value === null) {
         return undefined;
       }
@@ -72,15 +74,15 @@ class KeyvMemjs extends EventEmitter {
       }
     }
 
-    return this.client.set(key, value, {expires});
+    return this.clientMethods.set(key, value, {expires});
   }
 
   delete(key) {
-    return this.client.delete(key);
+    return this.clientMethods.delete(key);
   }
 
   clear() {
-    return this.client.flush().then(() => undefined);
+    return this.clientMethods.flush().then(() => undefined);
   }
 }
 
