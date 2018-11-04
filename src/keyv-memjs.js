@@ -63,7 +63,7 @@ class KeyvMemjs extends EventEmitter {
       return Promise.resolve(undefined);
     }
 
-    let expires = null;
+    let expires = 0;
     if (typeof ttl === 'number') {
       if (ttl > TTL_MAX) {
         // REF: https://github.com/memcached/memcached/blob/master/doc/protocol.txt#L79
