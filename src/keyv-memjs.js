@@ -1,6 +1,5 @@
 const EventEmitter = require('events');
 const memjs = require('memjs');
-const pify = require('pify');
 
 const TTL_MAX = 30*24*60*60*1000; // 30 days ms
 
@@ -38,7 +37,12 @@ class KeyvMemjs extends EventEmitter {
     this.client = client;
 
     this.clientMethods = ['get', 'set', 'delete', 'flush'].reduce((obj, method) => {
-      obj[method] = pify(client[method].bind(client));
+      obj[method] = (...args) => {
+        return new Promise(((resolve, reject) => {
+          args.push((err, result) => err ? reject(err) : resolve(result));
+          client[method].apply(client, args);
+        }));
+      };
       return obj;
     }, {});
 
